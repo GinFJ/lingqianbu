@@ -1,0 +1,34 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.playwright-cli/
+output/
+
+# 本机环境变量与密钥
+.env
+.env.*
+!.env.example
+*.local
+
+# TypeScript 与工具缓存
+*.tsbuildinfo
+.vite/
+.vitest/
+
+# 本地交付、临时材料与配对凭证
+outputs/
+work/
+tmp/
+*.zip
+*pairing-link*
+*pairing-qr*
+*配对链接*
+*配对二维码*
+
+# 编辑器与系统文件
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
