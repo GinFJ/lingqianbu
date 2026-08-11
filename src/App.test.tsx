@@ -1,10 +1,28 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { FinanceProvider } from './context/FinanceContext'
 import { db, repository } from './data/db'
 import { currentMonth, monthLabel, todayIso } from './lib/finance'
 import { syncService } from './sync/service'
+
+vi.mock('recharts', () => {
+  const ChartStub = ({ children }: { children?: ReactNode }) => <>{children}</>
+
+  return {
+    Bar: ChartStub,
+    BarChart: ChartStub,
+    CartesianGrid: ChartStub,
+    Cell: ChartStub,
+    Pie: ChartStub,
+    PieChart: ChartStub,
+    ResponsiveContainer: ChartStub,
+    Tooltip: ChartStub,
+    XAxis: ChartStub,
+    YAxis: ChartStub,
+  }
+})
 
 function csvFile(text: string, name = '导入测试.csv') {
   const file = new File([text], name, { type: 'text/csv' })
@@ -175,7 +193,7 @@ describe('首次记账流程', () => {
     expect(enqueue).toHaveBeenCalledWith(expect.objectContaining({ kind: 'snapshot' }))
   })
 
-  it('趋势与报表都提供可被辅助技术读取的数值明细', async () => {
+  it('总览趋势提供可被辅助技术读取的数值明细', async () => {
     const now = new Date().toISOString()
     await db.transactions.put({
       id: 'transaction-chart', type: 'expense', amountCents: 4321,
@@ -183,7 +201,15 @@ describe('首次记账流程', () => {
     })
     render(<FinanceProvider><App /></FinanceProvider>)
     expect(await screen.findByRole('table', { name: '近六个月收支明细' })).toBeInTheDocument()
+  })
 
+  it('懒加载报表提供可被辅助技术读取的数值明细', async () => {
+    const now = new Date().toISOString()
+    await db.transactions.put({
+      id: 'transaction-report', type: 'expense', amountCents: 4321,
+      categoryId: 'expense-study', date: todayIso(), note: '报表替代信息', createdAt: now, updatedAt: now,
+    })
+    render(<FinanceProvider><App /></FinanceProvider>)
     fireEvent.click((await screen.findAllByRole('button', { name: '报表' }))[0])
     expect(await screen.findByRole('table', { name: '十二个月收支明细' }, { timeout: 5000 })).toBeInTheDocument()
     expect(screen.getByRole('table', { name: `${monthLabel(currentMonth())}支出分类明细` })).toBeInTheDocument()

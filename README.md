@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.2-116c54" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.3-116c54" />
   <img alt="Local first" src="https://img.shields.io/badge/data-local--first-7b5b3a" />
   <img alt="React" src="https://img.shields.io/badge/React-19-2563eb" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178c6" />
@@ -133,19 +133,20 @@ flowchart TB
 
 ## 当前状态
 
-2026-08-10 在本仓库完成 1.0.2 P1 质量完善：
+2026-08-11 在本仓库完成 1.0.3 测试稳定性与治理一致性收尾：
 
 - `npm.cmd ci --offline` 成功，未联网安装依赖；npm 审计报告 0 个已知漏洞。
-- `npm.cmd test`：8 个测试文件、41 项测试通过。
+- `npm.cmd test`：8 个测试文件、42 项测试通过。
 - `npm.cmd run build`：TypeScript 检查和 Vite 生产构建通过。
-- 最终构建在 1440×900 桌面端和 375×812 隔离移动端完成焦点、弹窗、报表与响应式检查；无横向溢出，控制台 0 warning、0 error。
+- 报表语义表格测试不再初始化 Recharts 布局，并拆分为总览与懒加载报表两个独立用例；紧缩至 500ms 的反馈循环连续三轮通过，未再出现 jsdom 图表尺寸警告。
+- 1.0.3 实际 ZIP 已在 1440×900 桌面端和 375×812 隔离移动端完成页面、报表懒加载、弹窗边界与横向溢出检查；控制台 0 warning、0 error。
 - 已覆盖 IndexedDB 首次建库与 v1→v2 升级、CSV 事务回滚、错误密钥、损坏密文、唯一 IV、重复事件、离线队列和流水冲突收敛。
 - 已覆盖流水编辑删除、预算新增编辑删除、自定义分类依赖、清空数据、CSV 错误恢复及相应同步事件。
 - 图表仅在进入报表时加载；两张实际加载的 WebP 水墨素材合计约 223 kB，原 PNG 保留为源素材。
 - 弹窗支持自动聚焦、Tab 焦点圈定、Escape 关闭和焦点归还；图表提供可读数值表，高对比模式不只依赖颜色。
 - 当前 `supabase/schema.sql` 已在本机 PostgreSQL 和每月 0 美元的独立 Supabase 项目完成 RLS 对抗测试；云端测试数据已清理，测试项目已暂停，旧项目未改动。
-- 现有 Cloudflare Pages 直传候选 ZIP 属于 1.0.1，记录见 [`docs/发布候选记录-1.0.1.md`](./docs/发布候选记录-1.0.1.md)；本次未生成 1.0.2 发布包。
-- 本仓库尚无提交、标签或发布；旧工作目录的部署历史不能代替当前发布验收。
+- GitHub 已公开 1.0.2 基线提交 `c840eee`；本地 1.0.3 改动尚未提交、推送或建立标签。
+- 1.0.3 Cloudflare Pages 直传候选 ZIP 已生成并完成结构、哈希与隔离浏览器验收，记录见 [`docs/发布候选记录-1.0.3.md`](./docs/发布候选记录-1.0.3.md)；尚未部署。
 - 当前仓库没有生产环境变量、配对凭证或真实财务数据。
 - 线上双设备同步和当前版本的生产部署尚未在本仓库重新验收。
 
@@ -170,4 +171,4 @@ flowchart TB
 
 ---
 
-最后更新：2026-08-10
+最后更新：2026-08-11
